@@ -15,10 +15,10 @@ const addLegend = (parent, legendItems, legendWidth, legendHeight, left) => {
   const nodeLegend = parent.rc.rectangle(
     parent.legendPosition === 'left' ?
       leftPadding : // left
-      parent.width + parent.margin.right - 2 - (legendWidth), // right
+      parent.width + parent.margin.right - 2 * parent.legendScale - (legendWidth * parent.legendScale), // right
     -(parent.margin.top / 3), // y
-    legendWidth, // width
-    legendHeight, // height
+    legendWidth * parent.legendScale, // width
+    legendHeight * parent.legendScale, // height
     {
       fill: 'white',
       fillWeight: 0.1,
@@ -33,10 +33,10 @@ const addLegend = (parent, legendItems, legendWidth, legendHeight, left) => {
   legendItems.forEach((item, i) => {
     const g = select('.' + legendClass)
       .append('g')
-      .attr('transform', `translate(
-        ${parent.legendPosition === 'left' ? 5 :
-    parent.width - (legendWidth + 2)},
-        ${0})`);
+      .attr('transform', `scale(${parent.legendScale},${parent.legendScale}), translate(
+        ${(parent.legendPosition === 'left' ? 5 / parent.legendScale + parent.margin.left * (parent.legendScale - 1) / parent.legendScale :
+    parent.width / parent.legendScale - (legendWidth + 2) - parent.margin.right * (parent.legendScale - 1) / parent.legendScale)},
+        ${parent.margin.top * (parent.legendScale - 1) / 3 / parent.legendScale})`);
 
     g.append('rect')
       .style('fill', parent.colors[i])

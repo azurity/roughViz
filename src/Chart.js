@@ -15,6 +15,7 @@ class Chart {
     this.simplification = get(opts, 'simplification', 0.2);
     this.interactive = opts.interactive !== false;
     this.dataFormat = typeof opts.data === 'object' ? 'object' : 'file';
+    this.legendScale = opts.legendScale || 1;
   }
 
   setSvg() {
